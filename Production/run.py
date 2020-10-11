@@ -113,6 +113,7 @@ class App(QMainWindow):
                 self.failed_label.setText('Failed: %s' %len(self.failed))
                 self.failed_label.setHidden(False)
                 count += 1
+                self.pbar.setValue(count)
                 continue
 
             ftp_conn = ssh.open_sftp()
