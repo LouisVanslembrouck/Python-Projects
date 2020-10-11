@@ -1,9 +1,8 @@
-import sys
-from PyQt5.QtWidgets import QApplication, QFileDialog, QMainWindow, QPushButton, QProgressBar, QLabel
-from PyQt5 import uic
-
 import paramiko
+import sys
 import os
+from PyQt5.QtWidgets import QApplication, QFileDialog, QMainWindow, QPushButton, QProgressBar, QLabel, QMessageBox
+from PyQt5 import uic
 from dateutil.parser import parse
 from pathlib import Path
 
@@ -21,6 +20,7 @@ class App(QMainWindow):
         self.input_file = self.findChild(QPushButton, 'InputFile')
         self.download = self.findChild(QPushButton, 'Download')
         self.failed_label = self.findChild(QLabel, 'Failed')
+        self.msg = QMessageBox()
         self.pbar = self.findChild(QProgressBar, 'ProgressBar')
         self.pbar.setHidden(True)
         self.failed_label.setHidden(True)
@@ -36,6 +36,10 @@ class App(QMainWindow):
         if fileName:
             self.file = fileName
 
+
+    def close_event(self):
+        self.msg.setText('Please check the output.txt file.')
+        self.msg.exec_()
 
     def fetch_from_file(self):
 
@@ -64,8 +68,9 @@ class App(QMainWindow):
             os.makedirs(os.getcwd() + '\Copied', exist_ok=True)
             self.destination_path = os.getcwd() + '\Copied'
         except OSError:
-            print(f'Creation of "Copied" directory within current directory failed.')
-            exit()
+            self.msg.setText(f'Creation of "Copied" directory within current directory failed.')
+            self.msg.exec_()
+            sys.exit()
 
         self.files = self.fetch_from_file()
         out_file = os.getcwd() + '\output.txt'
@@ -88,14 +93,22 @@ class App(QMainWindow):
 
             if month_timestamp < 10:
                 month_timestamp = '0' + str(month_timestamp) # Month < 10 is parsed as two digits
-        
+
             destination_file = os.path.join(self.destination_path, filename)
             filepath = os.path.join(self.search_dir, str(year_timestamp), str(month_timestamp), str(day_timestamp), str(hr_timestamp), str(filename))
 
-            ssh = paramiko.SSHClient()
-            ssh.load_system_host_keys()
-            ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy()) # refrain from using this in PROD environment
-            ssh.connect(hostname=remote_host, username='root', password=self.get_pwd(remote_host), timeout=4)
+            try:
+                ssh = paramiko.SSHClient()
+                ssh.load_system_host_keys()
+                ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy()) # refrain from using this in PROD environment
+                ssh.connect(hostname=remote_host, username='root', password=self.get_pwd(remote_host), timeout=4)
+
+            except paramiko.SSHException as e:
+                self.failed.append(filepath)
+                self.failed_label.setText('Failed: %s' %len(self.failed))
+                self.failed_label.setHidden(False)
+
+                continue
 
             ftp_conn = ssh.open_sftp()
 
@@ -105,16 +118,6 @@ class App(QMainWindow):
             except IOError as e:
                 self.failed.append(filepath)
 
-                # Write output to file
-            with open(out_file, 'w+') as f:
-                        f.write('--- COPIED FILES ---' + '\n' + '\n')
-                        if len(self.success) > 0:
-                            f.write('\n'.join(self.success) + '\n' + '\n' + 'PLEASE CHECK DESTINATION FOLDER --- ' + self.destination_path + '\n' )
-                        f.write('\n' + '--- FAILED FILES ---' + '\n' + '\n')
-                        if len(self.failed) > 0:
-                            f.write('\n'.join(self.failed))
-                            self.failed_label.setText('Failed: %s' %len(self.failed))
-                            self.failed_label.setHidden(False)
 
             ftp_conn.close()
             ssh.close()
@@ -122,8 +125,20 @@ class App(QMainWindow):
             count += 1
             self.pbar.setValue(count)
 
-            if count == len(self.lines):
-                os.startfile(out_file)
+        # Write output to file
+        with open(out_file, 'w+') as f:
+                    f.write('--- COPIED FILES ---' + '\n' + '\n')
+                    if len(self.success) > 0:
+                        f.write('\n'.join(self.success) + '\n' + '\n' + 'PLEASE CHECK DESTINATION FOLDER --- ' + self.destination_path + '\n' )
+                    f.write('\n' + '--- FAILED FILES ---' + '\n' + '\n')
+                    if len(self.failed) > 0:
+                        f.write('\n'.join(self.failed))
+                        self.failed_label.setText('Failed: %s' %len(self.failed))
+                        self.failed_label.setHidden(False)
+
+        self.msg.setText(str('Please check output.txt file.'))
+        self.msg.exec_()
+        os.startfile(out_file)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
