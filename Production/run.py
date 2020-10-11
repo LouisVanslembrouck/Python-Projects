@@ -21,6 +21,7 @@ class App(QMainWindow):
         self.download = self.findChild(QPushButton, 'Download')
         self.failed_label = self.findChild(QLabel, 'Failed')
         self.msg = QMessageBox()
+        self.msg.Title = '!'
         self.pbar = self.findChild(QProgressBar, 'ProgressBar')
         self.pbar.setHidden(True)
         self.failed_label.setHidden(True)
@@ -36,10 +37,6 @@ class App(QMainWindow):
         if fileName:
             self.file = fileName
 
-
-    def close_event(self):
-        self.msg.setText('Please check the output.txt file.')
-        self.msg.exec_()
 
     def fetch_from_file(self):
 
@@ -62,6 +59,18 @@ class App(QMainWindow):
 
     def download_files(self):
 
+                
+        if len(self.fetch_from_file()) == 0:
+            self.msg.setText('Please select input file.')
+            self.msg.exec_()
+            # Prevent crash when no file is chosen.
+
+        self.files = self.fetch_from_file()
+        out_file = os.getcwd() + '\output.txt'
+
+        self.pbar.setHidden(False)
+        self.pbar.setMaximum(len(self.lines))
+
         count = 0
 
         try:
@@ -72,11 +81,7 @@ class App(QMainWindow):
             self.msg.exec_()
             sys.exit()
 
-        self.files = self.fetch_from_file()
-        out_file = os.getcwd() + '\output.txt'
 
-        self.pbar.setHidden(False)
-        self.pbar.setMaximum(len(self.lines))
 
         for pair in self.files:
 
@@ -107,7 +112,7 @@ class App(QMainWindow):
                 self.failed.append(filepath)
                 self.failed_label.setText('Failed: %s' %len(self.failed))
                 self.failed_label.setHidden(False)
-
+                count += 1
                 continue
 
             ftp_conn = ssh.open_sftp()
@@ -136,7 +141,7 @@ class App(QMainWindow):
                         self.failed_label.setText('Failed: %s' %len(self.failed))
                         self.failed_label.setHidden(False)
 
-        self.msg.setText(str('Please check output.txt file.'))
+        self.msg.setText('Please check output.txt file.')
         self.msg.exec_()
         os.startfile(out_file)
 
