@@ -1,0 +1,9 @@
+--- COPIED FILES ---
+
+C:\Users\louis\Documents\Receipt_Backup\2020\01\22\18\test.txt
+
+PLEASE CHECK DESTINATION FOLDER --- C:\Users\louis\Documents\Python\Github Repositories\Projects-2\PoslogCopy\Copied
+
+--- FAILED FILES ---
+
+C:\Users\louis\Documents\Receipt_Backup\2020\01\22\18\test2.txt
