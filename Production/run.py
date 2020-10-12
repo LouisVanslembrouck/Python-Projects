@@ -49,7 +49,6 @@ class App(QMainWindow):
                 return [i for i in self.lines]
 
 
-
     def get_pwd(self, host):
 
         result_list = []
@@ -62,7 +61,6 @@ class App(QMainWindow):
 
 
     def download_files(self):
-
 
 
         self.files = self.fetch_from_file()
@@ -159,6 +157,7 @@ class App(QMainWindow):
         else:
             self.msg.setText('Please select input file.')
             self.msg.exec_()
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
