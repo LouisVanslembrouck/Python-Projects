@@ -107,7 +107,7 @@ class App(QMainWindow):
             except FileNotFoundError:
                 self.failed.append(filepath)
 
-                # Write output to file
+            # Write output to file
             with open(out_file, 'w+') as f:
                         f.write('--- COPIED FILES ---' + '\n' + '\n')
                         if len(self.success) > 0:

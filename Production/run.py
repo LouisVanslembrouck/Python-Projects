@@ -40,10 +40,14 @@ class App(QMainWindow):
 
     def fetch_from_file(self):
 
-        with open(self.file, 'r+') as f:
-            self.lines = [line.split() for line in f]
+        if self.file:
+            with open(self.file, 'r+') as f:
+                self.lines = [line.split() for line in f]
 
-        return [i for i in self.lines]
+            return [i for i in self.lines]
+        
+        self.msg.setText('Please select input file.')
+        self.msg.exec_()
     
 
     def get_pwd(self, host):
@@ -59,12 +63,6 @@ class App(QMainWindow):
 
     def download_files(self):
 
-                
-        if len(self.fetch_from_file()) == 0:
-            self.msg.setText('Please select input file.')
-            self.msg.exec_()
-            # Prevent crash when no file is chosen.
-
         self.files = self.fetch_from_file()
         out_file = os.getcwd() + '\output.txt'
 
@@ -77,7 +75,7 @@ class App(QMainWindow):
             os.makedirs(os.getcwd() + '\Copied', exist_ok=True)
             self.destination_path = os.getcwd() + '\Copied'
         except OSError:
-            self.msg.setText(f'Creation of "Copied" directory within current directory failed.')
+            self.msg.setText('Creation of directory within current directory failed.')
             self.msg.exec_()
             sys.exit()
 
