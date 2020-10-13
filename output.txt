@@ -1,7 +1,0 @@
---- COPIED FILES ---
-
-
---- FAILED FILES ---
-
-C:\Centric\Backup\2020\01\22\18\test.txt --- [Errno None] Unable to connect to port 22 on 192.168.0.164
-C:\Centric\Backup\2020\01\22\18\test2.txt --- [Errno None] Unable to connect to port 22 on 192.168.0.164
