@@ -13,7 +13,7 @@ class App(QMainWindow):
         super(App, self).__init__()
         uic.loadUi('POSLogDownloaderWindow.ui', self)
 
-        self.search_dir = r'C:\Centric\Backup'
+        self.search_dir = r'C:\Centric\Backup\OBP'
 
         self.success = []
         self.failed = []
