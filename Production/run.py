@@ -1,4 +1,5 @@
 import paramiko
+import socket
 import sys
 import os
 from PyQt5.QtWidgets import QApplication, QFileDialog, QMainWindow, QPushButton, QProgressBar, QLabel, QMessageBox
@@ -122,6 +123,23 @@ class App(QMainWindow):
                     count += 1
                     self.pbar.setValue(count)
                     continue
+
+                except socket.timeout as e:
+                    self.failed.append(f'{filepath} --- {e}')
+                    self.failed_label.setText('Failed: %s' %len(self.failed))
+                    self.failed_label.setHidden(False)
+                    count += 1
+                    self.pbar.setValue(count)
+                    continue
+
+                except socket.error as e:
+                    self.failed.append(f'{filepath} --- {e}')
+                    self.failed_label.setText('Failed: %s' %len(self.failed))
+                    self.failed_label.setHidden(False)
+                    count += 1
+                    self.pbar.setValue(count)
+                    continue
+
 
                 ftp_conn = ssh.open_sftp()
 

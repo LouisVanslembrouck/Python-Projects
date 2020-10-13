@@ -3,5 +3,5 @@
 
 --- FAILED FILES ---
 
-C:\Centric\Backup\2020\01\22\18\test.txt
-C:\Centric\Backup\2020\01\22\18\test2.txt
+C:\Centric\Backup\2020\01\22\18\test.txt --- timed out
+C:\Centric\Backup\2020\01\22\18\test2.txt --- timed out
