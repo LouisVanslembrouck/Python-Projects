@@ -3,5 +3,5 @@
 
 --- FAILED FILES ---
 
-C:\Centric\Backup\2020\01\22\18\test.txt --- timed out
-C:\Centric\Backup\2020\01\22\18\test2.txt --- timed out
+C:\Centric\Backup\OBP\2020\01\22\18\test.txt --- [Errno None] Unable to connect to port 22 on 192.168.0.164
+C:\Centric\Backup\OBP\2020\01\22\18\test2.txt --- [Errno None] Unable to connect to port 22 on 192.168.0.164

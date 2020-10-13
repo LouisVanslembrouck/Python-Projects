@@ -5,7 +5,6 @@ import os
 from PyQt5.QtWidgets import QApplication, QFileDialog, QMainWindow, QPushButton, QProgressBar, QLabel, QMessageBox
 from PyQt5 import uic
 from dateutil.parser import parse
-from pathlib import Path
 
 class App(QMainWindow):
 
