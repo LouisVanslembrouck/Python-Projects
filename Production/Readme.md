@@ -1,4 +1,4 @@
---- Description ---
+# Description
 
 
 1. An input .txt file is taken which has to be in the correct format ( Consult 'Input File' section on how to create correct input file ).
@@ -10,7 +10,7 @@
 7. An output file is generated in the current directory. !!! Please check for any failed files here !!!
 
 
---- Input File ---
+# Input File
 
 
 Use following query to retrieve the list of files to retrieve:
