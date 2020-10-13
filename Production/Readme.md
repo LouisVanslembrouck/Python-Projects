@@ -20,7 +20,7 @@ Use following query to retrieve the list of files to retrieve:
 Copy the output into the 'poslog.txt' file that is provided in the current directory. Overwrite any existing data in this file. Save the file.
 !!! Verify if there are no trailing spaces or newlines !!!
 
-1. Run the POSlogDownloader.exe file.
+1. Run the 'run.exe' file.
 2. Select the 'poslog.txt' file through the file input button.
 3. Click the 'Download' button.
 4. Verify the output.txt file.
