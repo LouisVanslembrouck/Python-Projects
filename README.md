@@ -1,5 +1,7 @@
 # Description
 
+Python GUI Tool to retrieve files based on a input .txt file from multiple hosts and storing them in a central directory.
+Created using PyQT5 and Paramiko.
 
 1. An input .txt file is taken which has to be in the correct format ( Consult 'Input File' section on how to create correct input file ).
 2. An SSH session is opened to the host
